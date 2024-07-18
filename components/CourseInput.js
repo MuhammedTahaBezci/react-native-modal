@@ -1,7 +1,21 @@
 import { StyleSheet, Text, View, Modal, Image, TextInput, Button } from "react-native";
-import React from "react";
+import React, {useState} from "react";
 
-export default function CourseInput({visible}) {
+export default function CourseInput({visible, onAddCourse, onCancel}) {
+
+  // Girilen kurs başlığını tutmak için state (başlangıçta boş)
+  const [enteredCourseText, setEnteredCourseText] = useState('');
+
+  const addCourseHandler = () => {
+      // Yeni kurs ekleme fonksiyonuna girilen kurs başlığını gönder
+      onAddCourse(enteredCourseText);
+      setEnteredCourseText('');
+    };
+    // const courseInputHandler = (enteredText) => {
+    //   setentEredCourseText(enteredText);
+    // }
+
+  // return (Modalın geri dönüşü)
   return (
     <Modal
         animationType="slide"
@@ -11,13 +25,18 @@ export default function CourseInput({visible}) {
           <Image style={styles.image} source = {require(
             '../assets/images/logo.png'
           )}/>
-          <TextInput style={styles.textInput} placeholder="Yeni Kurs Ekle"/>
+          <TextInput 
+          style={styles.textInput}
+          placeholder="Yeni Kurs Ekle"
+          value = {enteredCourseText} 
+          onChangeText={(text) => setEnteredCourseText(text)} /* Metin değiştiğinde state'i güncelle */
+          />
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
-              <Button title="İptal Et" color="#D87093"/>
+              <Button title="İptal Et" color="#D87093" onPress={onCancel}/>
             </View>
             <View style={styles.button}>
-              <Button title="İptal Et" color="#4682B4"/>
+              <Button title="Ekle" color="#5F9EA0" onPress={addCourseHandler}/> 
             </View>          
           </View>
         </View>
@@ -30,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#5F9EA0",
+    backgroundColor: "#688f9f",
     padding: 20
   },
   image:{
